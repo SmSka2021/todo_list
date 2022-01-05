@@ -2,6 +2,7 @@
 //**дата на мобильнике */
 let today = new Date();
 let year = today.getFullYear();
+let monthNow = today.getMonth() + 1;
 
 const getDay = () => {
   let daysArr = [
@@ -55,6 +56,28 @@ function myTimer() {
     today.getHours() + ":" + minut + ":" + second;
 }
 
+//**календарик на мобильнике**/
+const getmonth = () => {
+  let monthArr = [
+    "Январь",
+    "Февраль",
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь",
+  ];
+  return monthArr[today.getMonth()];
+};
+document.querySelector(".month").innerHTML =
+  getmonth() + " " + year + " " + "г.";
+
+
 //**Таблица-месяц**//
 function createCalendar(elem, year, month) {
 
@@ -99,6 +122,7 @@ function gettDay(date) { // получаем номер дня недели, о�
 
 createCalendar(calendar, year, monthNow);
 
+ 
 
 // ***TODO list***/
 
@@ -142,9 +166,7 @@ function createTodo() {
   save();
 }
 
-ul.addEventListener(
-  "click",
-  function (event) {
+ul.addEventListener( "click", function (event) {
     if (event.target.tagName === "LI") {
       event.target.classList.toggle("checked");
       event.stopPropagation();
