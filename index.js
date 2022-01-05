@@ -55,68 +55,50 @@ function myTimer() {
     today.getHours() + ":" + minut + ":" + second;
 }
 
-//**календарик на мобильнике**/
-const getmonth = () => {
-  let monthArr = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
-  ];
-  return monthArr[today.getMonth()];
-};
-document.querySelector(".month").innerHTML =
-  getmonth() + " " + year + " " + "г.";
-
 //**Таблица-месяц**//
-let month = today.getMonth() + 1;
 function createCalendar(elem, year, month) {
-  let mon = month - 1;
-  let thisDate = new Date(year, mon);
-  let table =
-    "<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>";
 
-  // пустые ячейки в первой строке с понедельника до первого дня месяца//
-  for (let i = 0; i < getDa(thisDate); i++) {
-    table += "<td></td>";
+  let mon = month - 1; // месяцы в JS идут от 0 до 11, а не от 1 до 12
+  let d = new Date(year, mon);
+
+  let table = '<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>';
+
+  // пробелы для первого ряда до первого дня месяца
+  // * * * 1  2  3  4
+  for (let i = 0; i < gettDay(d); i++) {
+    table += '<td></td>';
   }
-  // заполняем <td> ячейки  датами//
-  while (thisDate.getMonth()) {
-    table += "<td>" + thisDate.getDate() + "</td>";
 
-    if (getDa(thisDate) % 7 == 6) {
-      // вс, последний день - делаем перевод строки//
-      table += "</tr><tr>";
+  // создаём <td> ячейки календаря с датами
+  while (d.getMonth() == mon) {
+    table += '<td>' + d.getDate() + '</td>';    
+
+    if (gettDay(d) % 7 == 6) { // вс, последний день - перевод строки
+      table += '</tr><tr>';
     }
-    thisDate.setDate(thisDate.getDate() + 1);
+
+    d.setDate(d.getDate() + 1);
   }
-  // добавляем пустые ячейками, если нужно (после 30-31 числа)//
-  if (getDa(thisDate) != 0) {
-    for (let i = getDay(thisDate); i < 7; i++) {
-      table += "<td></td>";
+  // добиваем таблицу пустыми ячейками, если нужно 
+  if (gettDay(d) != 0) {
+    for (let i = gettDay(d); i < 7; i++) {
+      table += '<td></td>';
     }
   }
-
-  // закрываем таблицу//
-  table += "</tr></table>";
+  // закрываем таблицу
+  table += '</tr></table>';
   elem.id = "tbl";
   elem.innerHTML = table;
 }
-function getDa(date) {
-  // получаем номер дня недели, от 0 (пн) до 6 (вс)
+
+function gettDay(date) { // получаем номер дня недели, от 0 (пн) до 6 (вс)
   let day = date.getDay();
   if (day == 0) day = 7; // делаем воскресенье (0) последним днем
   return day - 1;
 }
-createCalendar(calendar, year, month);
+
+createCalendar(calendar, year, monthNow);
+
 
 // ***TODO list***/
 
